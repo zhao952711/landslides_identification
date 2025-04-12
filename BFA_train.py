@@ -93,7 +93,7 @@ def main(args):
     val_dataset = VOCSegmentation(args.data_path,
                                   transforms=get_transform(), txt_name="val.txt")
 
-    num_workers = 2                                                                                                     # 加载数据使用cpu线程数
+    num_workers = 2                                                                                                   
 
     train_loader = torch.utils.data.DataLoader(train_dataset,
                                                batch_size=batch_size,
@@ -163,7 +163,7 @@ def parse_args():
     import argparse
     parser = argparse.ArgumentParser(description="pytorch training")
     parser.add_argument("--data-path", default=r"data/", help="VOCdevkit root")                     # 数据集路径
-    parser.add_argument("--num-classes", default=1, type=int)                                                           # 类别数；不包含背景
+    parser.add_argument("--num-classes", default=1, type=int)                                                           # 类别数，不包含背景
     parser.add_argument("--device", default="cuda", help="training device")                                             # 默认使用GPU
     parser.add_argument("-b", "--batch-size", default=16, type=int)                                                      # batch_size
     parser.add_argument("--epochs", default=50, type=int, metavar="N",                                                  # epochs
