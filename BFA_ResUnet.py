@@ -20,8 +20,7 @@ import numpy as np
 class BFA(nn.Module):
     def __init__(self, in_channels, out_channels):
         super(BFA, self).__init__()
-        # 修改此处以适应输入通道数量的变化
-        self.conv1x1 = nn.Conv2d(in_channels + 1, out_channels, kernel_size=1)  # 注意这里是 in_channels + 1
+        self.conv1x1 = nn.Conv2d(in_channels + 1, out_channels, kernel_size=1) 
         self.relu = nn.ReLU()
 
     def forward(self, x):
@@ -43,7 +42,7 @@ class BFA(nn.Module):
     def to_grayscale(self, x):
         # 将输入图像转换为灰度图像
         gray_image = 0.2989 * x[:, 0, :, :] + 0.5870 * x[:, 1, :, :] + 0.1140 * x[:, 2, :, :]
-        gray_image = gray_image.unsqueeze(1)  # 添加通道维度
+        gray_image = gray_image.unsqueeze(1) 
         return gray_image
 
     def canny_edge_detection(self, gray_image):
@@ -123,7 +122,7 @@ class BFA_resunet(nn.Module):
         return_layers = {'relu': 'out0', 'layer1': 'out1', 'layer2': 'out2', 'layer3': 'out3', 'layer4': 'out4'}
         self.backbone = IntermediateLayerGetter(backbone, return_layers=return_layers)
 
-        # 在这里添加BFA模块，并确保通道数正确
+        # 添加BFA模块
         self.bfa = BFA(in_channels=self.stage_out_channels[4], out_channels=self.stage_out_channels[4])
 
         c = self.stage_out_channels[4] + self.stage_out_channels[3]
@@ -142,7 +141,7 @@ class BFA_resunet(nn.Module):
         result = OrderedDict()
         backbone_out = self.backbone(x)
 
-        # 应用BFA模块于最深层的编码层特征图
+        # BFA模块应用于于最深层的编码层特征图
         backbone_out['out4'] = self.bfa(backbone_out['out4'])
 
         x = self.up1(backbone_out['out4'], backbone_out['out3'])
